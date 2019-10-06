@@ -4,8 +4,8 @@ const {
 
 const axios = require('axios');
 
-// eslint-disable-next-line no-undef
-RocketType = new GraphQLObjectType({
+
+const RocketType = new GraphQLObjectType({
   name: 'rocket',
   fields: () => ({
     rocket_id: { type: GraphQLString },
@@ -24,7 +24,6 @@ const LauchType = new GraphQLObjectType({
     launch_year: { type: GraphQLString },
     launch_data_local: { type: GraphQLString },
     launch_success: { type: GraphQLBoolean },
-    // eslint-disable-next-line no-undef
     rocket: { type: RocketType },
   }),
 });
@@ -37,6 +36,7 @@ const RootQuery = new GraphQLObjectType({
   fields: {
     launches: {
       type: new GraphQLList(LauchType),
+      // eslint-disable-next-line no-unused-vars
       resolve(parent, args) {
         return axios.get('https://api.spacexdata.com/v3/launches')
           .then((res) => res.data);
@@ -45,11 +45,11 @@ const RootQuery = new GraphQLObjectType({
     launch: {
       type: LauchType,
       args: {
-        flight_number: { type: GraphQLInt }
+        flight_number: { type: GraphQLInt },
       },
       resolve(parent, args) {
         return axios.get(`https://api.spacexdata.com/v3/launches/${args.flight_number}`)
-          .then((res) => res.data)
+          .then((res) => res.data);
       },
     },
   },
